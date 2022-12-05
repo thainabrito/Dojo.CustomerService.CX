@@ -12,12 +12,7 @@ namespace Dojo.CustomerService.CX.Controllers
         [HttpGet(Name = "Home")]
         public ActionResult Index()
         {
-            new MaterialApoioRepositorio().Database.add
-            var lista = new MaterialApoioRepositorio().MateriaisApoio();
-            // return StatusCode(200, new { Mensagem = "Bem vindo à api" });
-            return StatusCode(200, lista);
+            return StatusCode(200, new { Mensagem = "Bem vindo à api" });
         }
-
-
     }
 }
