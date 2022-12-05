@@ -10,11 +10,12 @@ namespace Dojo.CustomerService.CX.Servicos
 {
     public class CSATMongodb
     {
+        public static string DataBase = "DojoCustomerService";
         private IMongoDatabase mongoDatabase;
         public CSATMongodb()
         {
             var cnn = "mongodb://localhost:27017";
-            this.mongoDatabase = new MongoClient(cnn).GetDatabase("DojoCustomerService");
+            this.mongoDatabase = new MongoClient(cnn).GetDatabase(CSATMongodb.DataBase);
         }
 
         private IMongoCollection<Csat> mongoCollection()
@@ -22,7 +23,7 @@ namespace Dojo.CustomerService.CX.Servicos
             return this.mongoDatabase.GetCollection<Csat>("Csat");
         }
 
-        public async void Inserir(Csat csat)
+        public async Task Inserir(Csat csat)
         {
             await this.mongoCollection().InsertOneAsync(csat);
         }
@@ -45,6 +46,15 @@ namespace Dojo.CustomerService.CX.Servicos
         public async Task<Csat> BuscaPorId(ObjectId id)
         {
             return await this.mongoCollection().AsQueryable().Where(p => p.Id == id).FirstAsync();
+        }
+
+        public async Task ApagarTudo()
+        {
+            var itens = await Todos();
+            foreach(var item in itens)
+            {
+                await this.mongoCollection().DeleteOneAsync(p => p.Id == item.Id);
+            }
         }
     }
 }
