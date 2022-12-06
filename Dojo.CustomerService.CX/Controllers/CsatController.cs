@@ -9,19 +9,7 @@ namespace Dojo.CustomerService.CX.Controllers
     [Route("/")]
     public class CsatController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private readonly ILogger<CsatController> _logger;
-
-        public CsatController(ILogger<CsatController> logger)
-        {
-            _logger = logger;
-        }
-
-        [HttpGet("Csat")]
+        [HttpGet("csat")]
         public async Task<ActionResult> Index()
         {
             var csatMongo = new CSATMongodb();
@@ -34,12 +22,19 @@ namespace Dojo.CustomerService.CX.Controllers
         {
             if (csat.Score < 1 || csat.Score > 5)
             {
-                return StatusCode(400, new { mensagem = "Csat não pode ser menor que 1 e maior que 5" });
+                return StatusCode(400, new { mensagem = "Csat não pode ser menor que 1 ou maior que 5" });
             }
             var csatMongo = new CSATMongodb();
             csat.CreatedAt = DateTime.Now;
             csatMongo.Inserir(csat);
-            return StatusCode(200, csat);
+            return StatusCode(201, csat);
+        }
+
+        [HttpPut("csat/{id}")]
+        public async Task<ActionResult> Update([FromRoute] string id, [FromBody] Csat csat)
+        {
+            // fazer ação do código para o update
+            return StatusCode(200);
         }
     }
 }

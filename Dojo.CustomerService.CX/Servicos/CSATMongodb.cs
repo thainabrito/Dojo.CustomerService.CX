@@ -28,12 +28,12 @@ namespace Dojo.CustomerService.CX.Servicos
             await this.mongoCollection().InsertOneAsync(csat);
         }
 
-        public async void Atualizar(Csat materialApoio)
+        public async Task Atualizar(Csat materialApoio)
         {
             await this.mongoCollection().ReplaceOneAsync(i => i.Id == materialApoio.Id, materialApoio);
         }
 
-        public async void RemovePorId(ObjectId id)
+        public async Task RemovePorId(ObjectId id)
         {
             await this.mongoCollection().DeleteOneAsync(p => p.Id == id);
         }
@@ -46,6 +46,11 @@ namespace Dojo.CustomerService.CX.Servicos
         public async Task<Csat> BuscaPorId(ObjectId id)
         {
             return await this.mongoCollection().AsQueryable().Where(p => p.Id == id).FirstAsync();
+        }
+
+        public async Task<Csat> BuscaPorComment(string comment)
+        {
+            return await this.mongoCollection().AsQueryable().Where(p => p.Comment == comment).FirstAsync();
         }
 
         public async Task ApagarTudo()

@@ -1,22 +1,12 @@
-﻿using Dojo.CustomerService.CX.Controllers;
 using Dojo.CustomerService.CX.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DojoCustomerServiceTest.Models
+namespace Dojo.CustomerService.Test.Models
 {
-    internal class CsatTest
+    [TestClass]
+    public class CSATMongodbTest
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
-        [Test]
-        public void TestandoModelo()
+        [TestMethod]
+        public void TestandoClasseCsat()
         {
             var csat = new Csat();
             csat.Score = 5; // 22 a 27 se existem as propriedades
