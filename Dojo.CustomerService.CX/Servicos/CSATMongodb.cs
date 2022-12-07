@@ -33,7 +33,7 @@ namespace Dojo.CustomerService.CX.Servicos
             await this.mongoCollection().ReplaceOneAsync(i => i.Id == materialApoio.Id, materialApoio);
         }
 
-        public async Task RemovePorId(ObjectId id)
+        public async Task RemovePorId(Guid id)
         {
             await this.mongoCollection().DeleteOneAsync(p => p.Id == id);
         }
@@ -43,9 +43,16 @@ namespace Dojo.CustomerService.CX.Servicos
             return await this.mongoCollection().AsQueryable().ToListAsync();
         }
 
-        public async Task<Csat> BuscaPorId(ObjectId id)
+        public async Task<Csat> BuscaPorId(Guid id)
         {
-            return await this.mongoCollection().AsQueryable().Where(p => p.Id == id).FirstAsync();
+            foreach (var item in mongoCollection().AsQueryable().ToList())
+            {
+                if (item.Id.ToString() == id.ToString())
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         public async Task<Csat> BuscaPorComment(string comment)

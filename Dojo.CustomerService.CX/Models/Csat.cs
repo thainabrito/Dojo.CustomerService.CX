@@ -8,8 +8,8 @@ namespace Dojo.CustomerService.CX.Models
     public class Csat
     {
         [BsonId()]
-        [JsonIgnore]
-        public ObjectId Id { get; set; }
+        // [JsonIgnore]
+        public Guid Id { get; set; }
         public int Score { get; set; }
         public string Comment { get; set; }
         public bool ProblemSolved { get; set; }
