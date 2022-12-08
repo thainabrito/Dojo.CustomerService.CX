@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace Dojo.CustomerService.Test.Integracao
         public async Task TestandoGetCsatController()
         {
             var client = _http.CreateClient();
-            var response = await client.GetAsync("/csat");
+            var response = await client.GetAsync("csat/listar");
 
             Assert.IsNotNull(response);
             int statusCode = 0;
@@ -76,12 +77,28 @@ namespace Dojo.CustomerService.Test.Integracao
             await csatMongo.ApagarTudo();
         }
 
+        //[TestMethod]
+        //public async Task TestandoPutCsatController()
+        //{
+        //    var csatMongo = new CSATMongodb();
+        //    var csat = new Csat();
+        //    csat.Id = new Guid("7e179018-5c07-42bd-9e0d-371c554e7c9b");
+        //    csat.Score = 5;
+        //    csat.ProblemSolved = true;
+        //    csat.Comment = "teste para salvar";
+        //    csat.AttendantEmail = "maria@gmail.com";
+
+
+
+        //}
+
         [TestMethod]
         public async Task TestandoPutCsatController()
         {
 
             var csatMongo = new CSATMongodb();
             var csat = new Csat();
+            csat.Id = Guid.NewGuid();
             csat.Score = 5; // se existem as propriedades
             csat.ProblemSolved = true;
             csat.Comment = "teste para salvar";
@@ -89,19 +106,17 @@ namespace Dojo.CustomerService.Test.Integracao
             csat.CreatedAt = DateTime.Now;
             await csatMongo.Inserir(csat);
 
+            // var contentString = new StringContent(@"{'comment': 'novo comentario'}", Encoding.UTF8, "application/json");
+            var jsonContent = JsonConvert.SerializeObject(csat);
 
-            var csatUpdate = new Csat();
-            csat.Score = 7; // se existem as propriedades
-            csat.ProblemSolved = true;
-            csat.Comment = "teste para salvar";
-            csat.AttendantEmail = "maria@gmail.com";
-            csat.CreatedAt = DateTime.Now;
-            var jsonContent = JsonConvert.SerializeObject(csatUpdate);
-            var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            var contentString = new StringContent("meu comentario", System.Text.Encoding.UTF8, "text/plain");
+            //var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             var client = _http.CreateClient();
-            var response = await client.PutAsync($"/csat/{csat.Id}", contentString);
+            var response = await client.PutAsync($"/csat/comment/{csat.Id}", contentString);
 
+            string url = $"csat/comment/{csat.Id}";
+            var r2 = await client.PutAsJsonAsync(url, new { comment = "meu comentario" });
             Assert.IsNotNull(response);
             int statusCode = 0;
             if (response != null)

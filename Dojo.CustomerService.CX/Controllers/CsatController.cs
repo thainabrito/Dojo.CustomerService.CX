@@ -2,6 +2,7 @@ using Dojo.CustomerService.CX.Models;
 using Dojo.CustomerService.CX.Servicos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 namespace Dojo.CustomerService.CX.Controllers
@@ -23,19 +24,6 @@ namespace Dojo.CustomerService.CX.Controllers
             csatMongo.Inserir(csat);
             return StatusCode(201, csat);
         }
-
-        //[HttpPut("csat/{id}")]
-        //public async Task<ActionResult> Update([FromRoute] string id, [FromBody] Csat csat)
-        //{
-        //    var buscaId = new CSATMongodb();
-
-        //    var idReturn = buscaId.BuscaPorId(csat.Id);
-        //    if (idReturn == null)
-        //    {
-        //        return StatusCode(400, new { mensagem = "id não pode ser nulo" });
-        //    }
-        //    return StatusCode(200);
-        //}
 
         [HttpGet("csat/{id}")]
         public async Task<ActionResult> Consultar([FromRoute] string id)
@@ -115,8 +103,8 @@ namespace Dojo.CustomerService.CX.Controllers
             return StatusCode(204);
         }
 
-        [HttpGet("csat/listar/{score?}/{problemSolved?}/{attendantEmail?}")]
-        public async Task<ActionResult> Index([FromRoute] int? score = null, [FromRoute] bool? problemSolved = null, [FromRoute] string? attendantEmail = "")
+        [HttpGet("csat/listar")]
+        public async Task<ActionResult> Index(int? score = null, bool? problemSolved = null, string? attendantEmail = "")
         {
             var csatMongo = new CSATMongodb();
             var lista = await csatMongo.Todos();
@@ -128,15 +116,54 @@ namespace Dojo.CustomerService.CX.Controllers
 
             if (problemSolved != null)
             {
-                lista = lista.Where(s => s.ProblemSolved == problemSolved).ToList();
+                lista = lista.Where(p => p.ProblemSolved == problemSolved).ToList();
             }
 
             if (attendantEmail != "")
             {
-                lista = lista.Where(s => s.AttendantEmail == attendantEmail).ToList();
+                lista = lista.Where(a => a.AttendantEmail == attendantEmail).ToList();
             }
 
             return StatusCode(200, lista);
+        }
+
+        [HttpGet("csat/listar/{attendantEmail}")]
+        public async Task<ActionResult> Index([FromRoute] string attendantEmail, DateTime? createdAt)
+        {
+            var csatMongo = new CSATMongodb();
+            var lista = await csatMongo.Todos();
+
+            if (createdAt != null)
+            {
+                lista = lista.Where(s => s.CreatedAt == createdAt).ToList();
+            }
+
+            lista = lista.Where(a => a.AttendantEmail == attendantEmail).ToList();
+
+            if (lista.Count == 0)
+            {
+                return StatusCode(204);
+            }
+            int contaPromotores = lista.Where(a => a.Score == 5).Count();
+            int contaTotal = lista.Count();
+            decimal calculoScore = (decimal)contaPromotores / contaTotal;
+
+            int contaPositivos = lista.Where(a => a.ProblemSolved == true).Count();
+            int contaNegativos = contaTotal - contaPositivos;
+
+            var problemSolved = new ProblemSolved()
+            {
+                Total = contaTotal,
+                Negatives = contaNegativos,
+                Positives = contaPositivos
+            };
+
+            var summary = new Summary()
+            {
+                Score = calculoScore,
+                Fcr = problemSolved
+            };
+            return StatusCode(200, summary);
         }
     }
 }
