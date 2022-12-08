@@ -23,7 +23,7 @@ namespace Dojo.CustomerService.Test.Servico
             var csatMongo = new CSATMongodb();
             var csat = new Csat();
 
-            csat.Score = 5; // se existem as propriedades
+            csat.Score = 5;
             csat.ProblemSolved = true;
             csat.Comment = "teste para salvar";
             csat.AttendantEmail = "maria@gmail.com";

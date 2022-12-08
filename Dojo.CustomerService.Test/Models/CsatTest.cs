@@ -3,7 +3,7 @@ using Dojo.CustomerService.CX.Models;
 namespace Dojo.CustomerService.Test.Models
 {
     [TestClass]
-    public class CSATMongodbTest
+    public class CsatTest
     {
         [TestMethod]
         public void TestandoClasseCsat()

@@ -16,6 +16,7 @@ namespace Dojo.CustomerService.CX.Servicos
         {
             var cnn = "mongodb://localhost:27017";
             this.mongoDatabase = new MongoClient(cnn).GetDatabase(CSATMongodb.DataBase);
+
         }
 
         private IMongoCollection<Csat> mongoCollection()

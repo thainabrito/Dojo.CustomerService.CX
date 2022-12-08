@@ -50,8 +50,9 @@ namespace Dojo.CustomerService.CX.Controllers
         }
 
         [HttpPut("csat/comment/{id}")]
-        public async Task<ActionResult> Atualizar([FromRoute] string id, [FromBody] string comment)
+        public async Task<ActionResult> Atualizar([FromRoute] string id, [FromBody] Csat csat)
         {
+            var comment = csat.Comment;
             if (string.IsNullOrEmpty(id))
             {
                 return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
@@ -70,15 +71,16 @@ namespace Dojo.CustomerService.CX.Controllers
             {
                 return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
             }
-            var csat = idReturn.Result;
-            csat.Comment = comment;
-            csatMongoDB.Atualizar(csat);
+            var csatReturn = idReturn.Result;
+            csatReturn.Comment = comment;
+            csatMongoDB.Atualizar(csatReturn);
             return StatusCode(204);
         }
 
         [HttpPut("csat/problemSolved/{id}")]
-        public async Task<ActionResult> Atualizar([FromRoute] string id, [FromBody] bool problemSolved)
+        public async Task<ActionResult> AtualizarProblemSolved([FromRoute] string id, [FromBody] Csat csat)
         {
+            var problemSolved = csat.ProblemSolved;
             if (string.IsNullOrEmpty(id))
             {
                 return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
@@ -97,9 +99,9 @@ namespace Dojo.CustomerService.CX.Controllers
             {
                 return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
             }
-            var csat = idReturn.Result;
-            csat.ProblemSolved = problemSolved;
-            csatMongoDB.Atualizar(csat);
+            var csatReturn = idReturn.Result;
+            csatReturn.ProblemSolved = problemSolved;
+            csatMongoDB.Atualizar(csatReturn);
             return StatusCode(204);
         }
 
