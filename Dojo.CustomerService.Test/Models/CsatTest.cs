@@ -9,7 +9,7 @@ namespace Dojo.CustomerService.Test.Models
         public void TestandoClasseCsat()
         {
             var csat = new Csat();
-            csat.Score = 5; // 22 a 27 se existem as propriedades
+            csat.Score = 5;
             csat.ProblemSolved = true;
             csat.Comment = "teste para salvar";
             csat.AttendantEmail = "maria@gmail.com";

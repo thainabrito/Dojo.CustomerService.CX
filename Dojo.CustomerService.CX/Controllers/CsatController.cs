@@ -11,6 +11,10 @@ namespace Dojo.CustomerService.CX.Controllers
     [Route("/")]
     public class CsatController : ControllerBase
     {
+        private RequestManager _requestManager;
+        public CsatController(): base() {
+            _requestManager = new RequestManager();
+        }
         [HttpPost("csat")]
         public async Task<ActionResult> Create([FromBody] Csat csat)
         {
@@ -18,11 +22,8 @@ namespace Dojo.CustomerService.CX.Controllers
             {
                 return StatusCode(400, new { mensagem = "Csat não pode ser menor que 1 ou maior que 5" });
             }
-            var csatMongo = new CSATMongodb();
-            csat.CreatedAt = DateTime.Now;
-            csat.Id = Guid.NewGuid();
-            csatMongo.Inserir(csat);
-            return StatusCode(201, csat);
+            var newCsat = _requestManager.CreateCsat(csat);
+            return StatusCode(201, newCsat);
         }
 
         [HttpGet("csat/{id}")]
@@ -32,16 +33,12 @@ namespace Dojo.CustomerService.CX.Controllers
             {
                 return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
             }
-            var guidOutput = new Guid();
-            bool isValid = Guid.TryParse(id, out guidOutput);
-            if (!isValid)
+
+            if (!_requestManager.ValidaGuid(id))
             {
                 return StatusCode(400, new { mensagem = "id inválido" });
             }
-
-            var csatMongoDB = new CSATMongodb();
-
-            var idReturn = csatMongoDB.BuscaPorId(guidOutput);
+            var idReturn = _requestManager.ConsultarCsat(id);
             if (idReturn.Result == null)
             {
                 return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });

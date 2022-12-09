@@ -8,7 +8,7 @@ using MongoDB.Driver.Linq;
 
 namespace Dojo.CustomerService.CX.Servicos
 {
-    public class CSATMongodb
+    public class CSATMongodb : IConnection
     {
         public static string DataBase = "DojoCustomerService";
         private IMongoDatabase mongoDatabase;
@@ -64,7 +64,7 @@ namespace Dojo.CustomerService.CX.Servicos
         public async Task ApagarTudo()
         {
             var itens = await Todos();
-            foreach(var item in itens)
+            foreach (var item in itens)
             {
                 await this.mongoCollection().DeleteOneAsync(p => p.Id == item.Id);
             }
