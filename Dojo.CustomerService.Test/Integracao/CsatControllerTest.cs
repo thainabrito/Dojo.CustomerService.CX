@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Dojo.CustomerService.Test.Integracao
 {
-    [TestClass]
     public class CsatControllerTest
     {
         public CsatControllerTest() 

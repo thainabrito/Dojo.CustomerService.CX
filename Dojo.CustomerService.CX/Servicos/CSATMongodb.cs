@@ -29,9 +29,9 @@ namespace Dojo.CustomerService.CX.Servicos
             await this.mongoCollection().InsertOneAsync(csat);
         }
 
-        public async Task Atualizar(Csat materialApoio)
+        public async Task Atualizar(Csat csat)
         {
-            await this.mongoCollection().ReplaceOneAsync(i => i.Id == materialApoio.Id, materialApoio);
+            await this.mongoCollection().ReplaceOneAsync(i => i.Id == csat.Id, csat);
         }
 
         public async Task RemovePorId(Guid id)

@@ -54,23 +54,18 @@ namespace Dojo.CustomerService.CX.Controllers
             {
                 return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
             }
-            var guidOutput = new Guid();
-            bool isValid = Guid.TryParse(id, out guidOutput);
-            if (!isValid)
+
+            if (!_requestManager.ValidaGuid(id))
             {
                 return StatusCode(400, new { mensagem = "id inválido" });
             }
 
-            var csatMongoDB = new CSATMongodb();
-
-            var idReturn = csatMongoDB.BuscaPorId(guidOutput);
+            var idReturn = _requestManager.ConsultarCsat(id);
             if (idReturn.Result == null)
             {
                 return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
             }
-            var csatReturn = idReturn.Result;
-            csatReturn.Comment = comment;
-            csatMongoDB.Atualizar(csatReturn);
+            _requestManager.AtualizarComment(idReturn, comment);
             return StatusCode(204);
         }
 
@@ -82,86 +77,37 @@ namespace Dojo.CustomerService.CX.Controllers
             {
                 return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
             }
-            var guidOutput = new Guid();
-            bool isValid = Guid.TryParse(id, out guidOutput);
-            if (!isValid)
+
+            if (!_requestManager.ValidaGuid(id))
             {
                 return StatusCode(400, new { mensagem = "id inválido" });
             }
 
-            var csatMongoDB = new CSATMongodb();
-
-            var idReturn = csatMongoDB.BuscaPorId(guidOutput);
+            var idReturn = _requestManager.ConsultarCsat(id);
             if (idReturn.Result == null)
             {
                 return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
             }
-            var csatReturn = idReturn.Result;
-            csatReturn.ProblemSolved = problemSolved;
-            csatMongoDB.Atualizar(csatReturn);
+            _requestManager.AtualizarProblemSolved(idReturn, problemSolved);
             return StatusCode(204);
         }
 
         [HttpGet("csat/listar")]
         public async Task<ActionResult> Index(int? score = null, bool? problemSolved = null, string? attendantEmail = "")
         {
-            var csatMongo = new CSATMongodb();
-            var lista = await csatMongo.Todos();
-
-            if (score >= 1 && score <= 5)
-            {
-                lista = lista.Where(s => s.Score == score).ToList();
-            }
-
-            if (problemSolved != null)
-            {
-                lista = lista.Where(p => p.ProblemSolved == problemSolved).ToList();
-            }
-
-            if (attendantEmail != "")
-            {
-                lista = lista.Where(a => a.AttendantEmail == attendantEmail).ToList();
-            }
-
+            var lista = _requestManager.Lista(score, problemSolved, attendantEmail);
             return StatusCode(200, lista);
         }
 
         [HttpGet("csat/listar/{attendantEmail}")]
-        public async Task<ActionResult> Index([FromRoute] string attendantEmail, DateTime? createdAt)
+        public async Task<ActionResult> Relatorio([FromRoute] string attendantEmail, DateTime? createdAt)
         {
-            var csatMongo = new CSATMongodb();
-            var lista = await csatMongo.Todos();
+            var summary = _requestManager.Relatorio(attendantEmail, createdAt);
 
-            if (createdAt != null)
-            {
-                lista = lista.Where(s => s.CreatedAt == createdAt).ToList();
-            }
-
-            lista = lista.Where(a => a.AttendantEmail == attendantEmail).ToList();
-
-            if (lista.Count == 0)
+            if (summary == null)
             {
                 return StatusCode(204);
             }
-            int contaPromotores = lista.Where(a => a.Score == 5).Count();
-            int contaTotal = lista.Count();
-            decimal calculoScore = (decimal)contaPromotores / contaTotal;
-
-            int contaPositivos = lista.Where(a => a.ProblemSolved == true).Count();
-            int contaNegativos = contaTotal - contaPositivos;
-
-            var problemSolved = new ProblemSolved()
-            {
-                Total = contaTotal,
-                Negatives = contaNegativos,
-                Positives = contaPositivos
-            };
-
-            var summary = new Summary()
-            {
-                Score = calculoScore,
-                Fcr = problemSolved
-            };
             return StatusCode(200, summary);
         }
     }
