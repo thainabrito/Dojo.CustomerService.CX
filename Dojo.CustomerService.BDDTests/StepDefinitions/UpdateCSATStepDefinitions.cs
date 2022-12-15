@@ -28,12 +28,12 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         [When(@"atualizada a avaliacao")]
         public async Task WhenAtualizadaAAvaliacao(string id)
         {
-            await CsatController.Atualizar(id);
+            await CsatController.Atualizar(id, Csat);
 
         }
 
         [Then(@"retornar o csatId")]
-        public async Task<Guid> ThenRetornarOCsatId()
+        public Guid ThenRetornarOCsatId()
         {
             return Csat.Id;
         }
@@ -51,9 +51,9 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         }
 
         [Then(@"retornar mensagem de nota inválida")]
-        public async Task ThenRetornarMensagemDeNotaInvalida(int score)
+        public async Task ThenRetornarMensagemDeNotaInvalida(string id)
         {
-            await CsatController.Atualizar(Csat);
+            await CsatController.Atualizar(id, Csat);
         }
 
         [Given(@"o Comment '([^']*)'")]
@@ -70,9 +70,9 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         }
 
         [Then(@"retornar a mensagem de comentario deve ser preenchido")]
-        public async Task ThenRetornarAMensagemDeComentarioDeveSerPreenchido(string comment)
+        public async Task ThenRetornarAMensagemDeComentarioDeveSerPreenchido(string id)
         {
-            await CsatController.Atualizar(Csat);
+            await CsatController.Atualizar(id, Csat);
         }
 
         [Given(@"o ProblemSolved 'true’")]

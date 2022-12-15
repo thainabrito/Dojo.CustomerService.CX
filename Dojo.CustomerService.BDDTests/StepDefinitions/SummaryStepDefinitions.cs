@@ -1,5 +1,6 @@
 using Dojo.CustomerService.CX.Controllers;
 using Dojo.CustomerService.CX.Models;
+using Dojo.CustomerService.CX.Servicos;
 using System;
 using TechTalk.SpecFlow;
 
@@ -31,27 +32,32 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         }
 
         [When(@"solicitado o sumario")]
-        public async Task WhenSolicitadoOSumario()
+        public async Task WhenSolicitadoOSumario(string attendantEmail)
         {
-            await CsatController.Relatorio(Csat);
+            await CsatController.Relatorio(attendantEmail, null);
         }
 
         [Then(@"deve retornar a lista de csat")]
-        public async Task<object> ThenDeveRetornarAListaDeCsat()
+        public void ThenDeveRetornarAListaDeCsat()
         {
-            return CsatController.Index;
+            var resultado = CsatController.Index();
+            resultado.Should().NotBeNull();
         }
 
         [Then(@"deve retornar o score")]
-        public async Task<int> ThenDeveRetornarOScore()
+        public void ThenDeveRetornarOScore()
         {
-            return Csat.Score;
+            var score = Csat.Score;
+            score.Should().BeGreaterThan(0);
+            score.Should().BeLessThan(6);
         }
 
         [Then(@"deve retornar o FCR")]
-        public async Task<bool> ThenDeveRetornarOFCR()
+        public void ThenDeveRetornarOFCR()
         {
-            return Csat.ProblemSolved;
+            Csat.Should().NotBeNull();
+            var problemSolved = Csat.ProblemSolved;
+            problemSolved.Should().Be(true);
         }
     }
 }
