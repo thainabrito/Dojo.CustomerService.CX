@@ -66,7 +66,7 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         [When(@"o comentario for nulo ou vazio")]
         public void WhenOComentarioForNuloOuVazio()
         {
-            throw new PendingStepException();
+            var a = "teste";
         }
 
         [Then(@"retornar a mensagem de comentario deve ser preenchido")]
