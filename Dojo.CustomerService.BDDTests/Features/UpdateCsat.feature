@@ -57,4 +57,4 @@ Cenario:UpdateInvalidScore
     Dado o Id '3f4dfa22-ceb8-4dc1-8c33-516023280c7g'
     E o ProblemSolved 'true'
     Quando atualizada a avaliacao
-    Entao retornar o csatId
+    Entao retornar o csatId 
