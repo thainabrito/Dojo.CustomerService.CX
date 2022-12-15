@@ -40,13 +40,12 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         public async Task WhenCriadaAAvaliacaoAsync()
         {
             var result = await CsatController.Create(Csat);
-            Result = result.Model
         }
 
         [Then(@"retornar o csatId")]
-        public void ThenRetornarOCsatId()
+        public async Task ThenRetornarOCsatId()
         {
-            
+            return Csat.Id;
         }
     }
 }
