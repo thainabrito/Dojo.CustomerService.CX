@@ -23,7 +23,7 @@ Cenario:UpdateInvalidScore
     E o Score '6'
     Quando atualizada a avaliacao
     E nota não for válida
-    Entao retornar mensagem de nota inválida
+    Entao retornar mensagem de nota invalida
 
 @csat
 @csat-update
