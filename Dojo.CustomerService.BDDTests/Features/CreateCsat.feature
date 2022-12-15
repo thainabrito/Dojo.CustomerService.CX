@@ -27,4 +27,4 @@ Criação do CSAT (Customer Satisfaction Score)
 	E o ProblemSolved 'true'
 	Quando criada a avaliacao
 	E nota não for válida
-	Entao retornar mensagem de nota inválida
+	Entao retornar mensagem de nota inválida 
