@@ -14,5 +14,7 @@ namespace Dojo.CustomerService.CX.Models
         public bool ProblemSolved { get; set; }
         public string AttendantEmail { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime InitialDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

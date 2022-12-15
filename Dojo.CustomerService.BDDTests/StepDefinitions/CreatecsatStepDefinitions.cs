@@ -1,12 +1,13 @@
-using Dojo.CustomerService.CX.Controllers;
+﻿using Dojo.CustomerService.CX.Controllers;
 using Dojo.CustomerService.CX.Models;
+using FluentAssertions;
 using System;
 using TechTalk.SpecFlow;
 
 namespace Dojo.CustomerService.BDDTests.StepDefinitions
 {
     [Binding]
-    public class CreatecsatStepDefinitions
+    public class CreateCsatStepDefinitions
     {
         public Csat Csat { get; set; }
         public CsatController CsatController { get; set; }
@@ -15,7 +16,7 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         [Given(@"o Id '([^']*)'")]
         public void GivenOId(Guid id)
         {
-            Csat.Id = id; 
+            Csat.Id = id;
         }
 
         [Given(@"o Comment '([^']*)'")]
@@ -39,14 +40,14 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         [When(@"criada a avaliacao")]
         public async Task WhenCriadaAAvaliacaoAsync()
         {
-            var result = await CsatController.Create(Csat);
-            Result = result.Model
+            await CsatController.Create(Csat);
+            
         }
 
         [Then(@"retornar o csatId")]
-        public void ThenRetornarOCsatId()
+        public async Task<Guid> ThenRetornarOCsatId()
         {
-            
+            return Csat.Id;
         }
     }
 }

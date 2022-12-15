@@ -20,7 +20,7 @@ namespace Dojo.CustomerService.CX.Controllers
         {
             if (csat.Score < 1 || csat.Score > 5)
             {
-                return StatusCode(400, new { mensagem = "Csat não pode ser menor que 1 ou maior que 5" });
+                return StatusCode(400, new { mensagem = "Score não pode ser menor que 1 ou maior que 5" });
             }
             var newCsat = _requestManager.CreateCsat(csat);
             return StatusCode(201, newCsat);
@@ -41,7 +41,7 @@ namespace Dojo.CustomerService.CX.Controllers
             var idReturn = _requestManager.ConsultarCsat(id);
             if (idReturn.Result == null)
             {
-                return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
+                return StatusCode(404, new { mensagem = "Não foi encontrado o id" });
             }
             return StatusCode(200, idReturn.Result);
         }
@@ -52,7 +52,7 @@ namespace Dojo.CustomerService.CX.Controllers
             var comment = csat.Comment;
             if (string.IsNullOrEmpty(id))
             {
-                return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
+                return StatusCode(400, new { mensagem = "O comentário deve ser preenchido" });
             }
 
             if (!_requestManager.ValidaGuid(id))
@@ -63,7 +63,7 @@ namespace Dojo.CustomerService.CX.Controllers
             var idReturn = _requestManager.ConsultarCsat(id);
             if (idReturn.Result == null)
             {
-                return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
+                return StatusCode(404, new { mensagem = "Não foi encontrado o id" });
             }
             _requestManager.AtualizarComment(idReturn, comment);
             return StatusCode(204);
@@ -86,7 +86,7 @@ namespace Dojo.CustomerService.CX.Controllers
             var idReturn = _requestManager.ConsultarCsat(id);
             if (idReturn.Result == null)
             {
-                return StatusCode(404, new { mensagem = "Não foi encontrado o csat" });
+                return StatusCode(404, new { mensagem = "Não foi encontrado o id" });
             }
             _requestManager.AtualizarProblemSolved(idReturn, problemSolved);
             return StatusCode(204);
