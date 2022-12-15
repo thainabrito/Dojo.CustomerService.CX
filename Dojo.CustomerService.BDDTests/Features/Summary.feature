@@ -1,4 +1,4 @@
-﻿#language: pt-br
+#language: pt-br
 Funcionalidade: Summary
 Sumário de CSAT de um agente
 

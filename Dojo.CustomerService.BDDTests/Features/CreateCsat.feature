@@ -1,4 +1,4 @@
-﻿#language: pt-br
+#language: pt-br
 Funcionalidade: Createcsat
 Criação do CSAT (Customer Satisfaction Score)
 

@@ -47,7 +47,7 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         [Then(@"retornar o csatId")]
         public async Task<Guid> ThenRetornarOCsatId()
         {
-            return Csat.Id;
+            return Csat.Id; 
         }
     }
 }

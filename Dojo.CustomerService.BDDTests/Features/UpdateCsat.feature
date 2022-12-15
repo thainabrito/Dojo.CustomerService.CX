@@ -1,4 +1,4 @@
-﻿#language: pt-br
+#language: pt-br
 Funcionalidade: UpdateCSAT
 Atualização do CSAT (Customer Satisfaction Score)
 
