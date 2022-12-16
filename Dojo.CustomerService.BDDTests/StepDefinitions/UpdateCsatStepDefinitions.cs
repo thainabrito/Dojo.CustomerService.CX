@@ -1,5 +1,6 @@
 using Dojo.CustomerService.CX.Controllers;
 using Dojo.CustomerService.CX.Models;
+using Gherkin.Ast;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using TechTalk.SpecFlow;
@@ -64,9 +65,9 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
 
 
         [When(@"o comentario for nulo ou vazio")]
-        public void WhenOComentarioForNuloOuVazio()
+        public async Task WhenOComentarioForNuloOuVazio(Csat csat)
         {
-            var a = "teste";
+            await CsatController.Create(csat);
         }
 
         [Then(@"retornar a mensagem de comentario deve ser preenchido")]
