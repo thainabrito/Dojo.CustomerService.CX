@@ -46,15 +46,18 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         }
 
         [When(@"nota não for válida")]
-        public async Task  WhenNotaNaoForValida(Guid id)
+        public void WhenNotaNaoForValida()
         {
-            await CsatController.Create(Csat);
+            Csat.Score.Should().NotBeInRange(1, 5);
         }
 
         [Then(@"retornar mensagem de nota inválida")]
         public async Task ThenRetornarMensagemDeNotaInvalida(string id)
         {
-            await CsatController.Atualizar(id, Csat);
+            var result = await CsatController.Create(Csat);
+            result.Should().NotBeNull();
+            var code = (ObjectResult)result;
+            code.StatusCode.Should().Be(400);
         }
 
         [Given(@"o Comment '([^']*)'")]
@@ -65,15 +68,19 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
 
 
         [When(@"o comentario for nulo ou vazio")]
-        public async Task WhenOComentarioForNuloOuVazio(Csat csat)
+        public void WhenOComentarioForNuloOuVazio()
         {
-            await CsatController.Create(csat);
+            Csat.Comment.Should().BeNullOrEmpty();
         }
 
         [Then(@"retornar a mensagem de comentario deve ser preenchido")]
         public async Task ThenRetornarAMensagemDeComentarioDeveSerPreenchido(string id)
         {
             await CsatController.Atualizar(id, Csat);
+            var result = await CsatController.Atualizar(id, Csat);
+            result.Should().NotBeNull();
+            var code = (ObjectResult)result;
+            code.StatusCode.Should().Be(400);
         }
 
         [Given(@"o ProblemSolved 'true’")]

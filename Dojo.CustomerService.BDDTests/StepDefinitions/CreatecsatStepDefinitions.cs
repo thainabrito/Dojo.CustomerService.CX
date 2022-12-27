@@ -40,8 +40,8 @@ namespace Dojo.CustomerService.BDDTests.StepDefinitions
         [When(@"criada a avaliacao")]
         public async Task WhenCriadaAAvaliacaoAsync()
         {
-            await CsatController.Create(Csat);
-            
+            var result = await CsatController.Create(Csat);
+            result.Should().NotBeNull();
         }
 
         [Then(@"retornar o csatId")]
