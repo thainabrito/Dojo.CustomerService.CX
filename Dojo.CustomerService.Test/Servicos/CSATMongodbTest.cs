@@ -1,6 +1,8 @@
 using Dojo.CustomerService.CX.Models;
 using Dojo.CustomerService.CX.Servicos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Moq.AutoMock;
 
 namespace Dojo.CustomerService.Test.Servico
 {
@@ -28,7 +30,6 @@ namespace Dojo.CustomerService.Test.Servico
             csat.Comment = "teste para salvar";
             csat.AttendantEmail = "maria@gmail.com";
             csat.CreatedAt = DateTime.Now;
-
 
             await csatMongo.Inserir(csat);
             var quantidade = (await csatMongo.Todos()).Count;

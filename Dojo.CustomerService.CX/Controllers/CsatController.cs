@@ -1,3 +1,4 @@
+using Dojo.CustomerService.CX.Business;
 using Dojo.CustomerService.CX.Models;
 using Dojo.CustomerService.CX.Servicos;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace Dojo.CustomerService.CX.Controllers
         public CsatController(): base() {
             _requestManager = new RequestManager();
         }
+
         [HttpPost("csat")]
         public async Task<ActionResult> Create([FromBody] Csat csat)
         {
@@ -29,43 +31,26 @@ namespace Dojo.CustomerService.CX.Controllers
         [HttpGet("csat/{id}")]
         public async Task<ActionResult> Consultar([FromRoute] string id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
-            }
-
-            if (!_requestManager.ValidaGuid(id))
-            {
-                return StatusCode(400, new { mensagem = "id inválido" });
-            }
-            var idReturn = _requestManager.ConsultarCsat(id);
-            if (idReturn.Result == null)
-            {
-                return StatusCode(404, new { mensagem = "Não foi encontrado o id" });
-            }
-            return StatusCode(200, idReturn.Result);
+            var result = Validation.ValidateId(id, _requestManager);
+            return StatusCode(result.Code, result.Message);
         }
 
         [HttpPut("csat/comment/{id}")]
         public async Task<ActionResult> Atualizar([FromRoute] string id, [FromBody] Csat csat)
         {
             var comment = csat.Comment;
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(comment))
             {
                 return StatusCode(400, new { mensagem = "O comentário deve ser preenchido" });
             }
+            var result = Validation.ValidateId(id, _requestManager);
 
-            if (!_requestManager.ValidaGuid(id))
+            if (result.Status == false)
             {
-                return StatusCode(400, new { mensagem = "id inválido" });
+                return StatusCode(result.Code, result.Message);
             }
 
-            var idReturn = _requestManager.ConsultarCsat(id);
-            if (idReturn.Result == null)
-            {
-                return StatusCode(404, new { mensagem = "Não foi encontrado o id" });
-            }
-            _requestManager.AtualizarComment(idReturn, comment);
+            _requestManager.AtualizarComment((Task <Csat>)result.Message, comment);
             return StatusCode(204);
         }
 
@@ -73,22 +58,14 @@ namespace Dojo.CustomerService.CX.Controllers
         public async Task<ActionResult> AtualizarProblemSolved([FromRoute] string id, [FromBody] Csat csat)
         {
             var problemSolved = csat.ProblemSolved;
-            if (string.IsNullOrEmpty(id))
-            {
-                return StatusCode(400, new { mensagem = "Id não pode estar vazio" });
-            }
 
-            if (!_requestManager.ValidaGuid(id))
-            {
-                return StatusCode(400, new { mensagem = "id inválido" });
-            }
+            var result = Validation.ValidateId(id, _requestManager);
 
-            var idReturn = _requestManager.ConsultarCsat(id);
-            if (idReturn.Result == null)
+            if (result.Status == false)
             {
-                return StatusCode(404, new { mensagem = "Não foi encontrado o id" });
+                return StatusCode(result.Code, result.Message);
             }
-            _requestManager.AtualizarProblemSolved(idReturn, problemSolved);
+            _requestManager.AtualizarProblemSolved((Task<Csat>)result.Message, problemSolved);
             return StatusCode(204);
         }
 
