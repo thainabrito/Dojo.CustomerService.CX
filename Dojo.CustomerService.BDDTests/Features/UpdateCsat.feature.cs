@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 =======
 // ------------------------------------------------------------------------------
 >>>>>>> b932e07bed00c7d0746ac6bc53d3e748be62311b
@@ -14,7 +14,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dojo.CustomerService.CX.Specs.Features
+namespace Dojo.CustomerService.BDDTests.Features
 {
     using TechTalk.SpecFlow;
     using System;
@@ -69,7 +69,7 @@ namespace Dojo.CustomerService.CX.Specs.Features
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "UpdateCSAT")))
             {
-                global::Dojo.CustomerService.CX.Specs.Features.UpdateCSATFeature.FeatureSetup(null);
+                global::Dojo.CustomerService.BDDTests.Features.UpdateCSATFeature.FeatureSetup(null);
             }
         }
         
