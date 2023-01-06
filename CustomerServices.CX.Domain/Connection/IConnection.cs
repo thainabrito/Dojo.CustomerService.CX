@@ -1,6 +1,7 @@
 ﻿using Dojo.CustomerService.CX.Models;
+using Dojo.CustomerService.CX.Services;
 
-namespace Dojo.CustomerService.CX.Servicos
+namespace Dojo.CustomerService.CX.Services
 {
     public interface IConnection
     {

@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Dojo.CustomerService.CX.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Linq;
 
-namespace Dojo.CustomerService.CX.Servicos
+namespace Dojo.CustomerService.CX.Services
 {
     public class CSATMongodb : IConnection
     {

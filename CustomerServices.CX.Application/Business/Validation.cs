@@ -1,7 +1,7 @@
-﻿using Dojo.CustomerService.CX.Servicos;
+﻿using Dojo.CustomerService.CX.Services;
 using MongoDB.Driver;
 
-namespace Dojo.CustomerService.CX.Business
+namespace Dojo.CustomerService.CX.Application.Business
 {
     public static class Validation
     {

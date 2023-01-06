@@ -1,6 +1,7 @@
+using Dojo.CustomerService.CX.Application.Business;
 using Dojo.CustomerService.CX.Business;
 using Dojo.CustomerService.CX.Models;
-using Dojo.CustomerService.CX.Servicos;
+using Dojo.CustomerService.CX.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;

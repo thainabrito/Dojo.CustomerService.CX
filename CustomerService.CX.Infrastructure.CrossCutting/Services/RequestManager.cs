@@ -1,6 +1,7 @@
 ﻿using Dojo.CustomerService.CX.Models;
+using MongoDB.Driver.Core.Connections;
 
-namespace Dojo.CustomerService.CX.Servicos
+namespace Dojo.CustomerService.CX.Services
 {
     public class RequestManager
     {
